@@ -18,7 +18,7 @@ class testMain(unittest.TestCase):
 
         expdf = pd.DataFrame(exp)
 
-        raw = main.import_syncable("test/testcase.csv", 2021)
+        raw = main.import_syncable("test/testsyncable.csv", 2021)
         ret = raw.to_dict("list")
 
         assert ret == exp
