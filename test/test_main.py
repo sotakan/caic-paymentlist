@@ -2,23 +2,34 @@
 
 import unittest
 import pandas as pd
-from datetime import datetime as dt
 import main
 
 class testMain(unittest.TestCase):
     def testImport_Syncable(self):
         exp = {
             "id": [2,4,5],
-            "寄付日": [dt(2021,1,27,14,30), dt(2021,1,1,14,30), dt(2021,12,31,14,30)],
+            "寄付日": [pd.Timestamp(2021,1,27,14,30), pd.Timestamp(2021,1,1,14,30), pd.Timestamp(2021,12,31,14,30)],
             "金額": [12000, 12000, 12000],
             "手数料": [660, 660, 660],
             "種別": ["年会費", "年会費", "年会費"],
             "寄付者ユニークID": [2, 4, 5],
             "氏名": ["テスト　太郎", "テスト　太郎", "テスト　太郎"]}
 
-        expdf = pd.DataFrame(exp)
-
-        raw = main.import_syncable("test/testcase.csv", 2021)
+        raw = main.import_syncable("test/testsyncable.csv", 2021)
         ret = raw.to_dict("list")
 
-        assert ret == exp
+        self.assertEqual(exp, ret)
+
+    def testImport_sbi(self):
+        exp = {
+            "日付": [pd.Timestamp(2022,10,21), pd.Timestamp(2022,10,16), pd.Timestamp(2022,10,12)],
+            "内容": ["振込＊テスト　タロウジュニア", "利息", "振込＊テスト　タロウシニア"],
+            "出金金額(円)": [0, 0, 0],
+            "入金金額(円)": ["17,000", "2", "17,000"],
+            "残高(円)": ["3,018,066", "3,001,066", "3,001,064"],
+            "メモ": ["-","-","-"]}
+
+        raw = main.import_sbi("test/testsbi.csv")
+        ret = raw.to_dict("list")
+
+        self.assertEqual(ret, exp)
