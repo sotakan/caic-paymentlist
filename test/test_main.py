@@ -3,6 +3,7 @@
 import unittest
 import pandas as pd
 import main
+import os
 
 class testMain(unittest.TestCase):
     def testImport_Syncable(self):
@@ -33,3 +34,13 @@ class testMain(unittest.TestCase):
         ret = raw.to_dict("list")
 
         self.assertEqual(ret, exp)
+
+    def testImport_member(self):
+        os.environ["CAIC_PAYMENTLIST_SHEETID"] = "1TkDu5TI5T7aPuhVVGAF4XhBtGEDEPVspmqkSJSv-bkI"
+        os.environ["CAIC_PAYMENTLIST_SHEETRANGE"] = "会費確認!A:C"
+        os.environ["CAIC_PAYMENTLIST_CREDPATH"] = "creds"
+
+        exp = ["会員種別", "氏名", "口座名義"]
+        ret = main.import_members()
+
+        self.assertEqual(exp, ret[0])
