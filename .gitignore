@@ -3,3 +3,4 @@ playground/
 *.pyc
 settings.json
 creds/
+.env
