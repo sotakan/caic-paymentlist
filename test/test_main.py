@@ -41,15 +41,21 @@ class testMain(unittest.TestCase):
     def testImport_member(self):
 
         if os.environ.get("CI") == "true":
-            creds = Credentials(token=os.environ.get("CI_TOKEN"), refresh_token=os.environ.get("CI_REFRESH_TOKEN"), token_uri=os.environ.get("CI_TOKEN_URI"), client_id=os.environ.get("CI_CLIENT_ID"), client_secret=os.environ.get("CI_CLIENT_SECRET"), scopes= [os.environ.get("CI_SCOPES")])
+            creds = Credentials(token=os.environ.get("CI_TOKEN"), refresh_token=os.environ.get("CI_REFRESH_TOKEN"), token_uri=os.environ.get(
+                "CI_TOKEN_URI"), client_id=os.environ.get("CI_CLIENT_ID"), client_secret=os.environ.get("CI_CLIENT_SECRET"), scopes=[os.environ.get("CI_SCOPES")])
         else:
-            os.environ["CAIC_PAYMENTLIST_CREDPATH"]="creds"
+            os.environ["CAIC_PAYMENTLIST_CREDPATH"] = "creds"
             creds = main.auth_google()
 
-        os.environ["CAIC_PAYMENTLIST_SHEETID"]="1TkDu5TI5T7aPuhVVGAF4XhBtGEDEPVspmqkSJSv-bkI"
-        os.environ["CAIC_PAYMENTLIST_SHEETRANGE"]="会費確認!A:C"
-        
-        exp=["会員種別", "氏名", "口座名義"]
-        ret=main.import_members(creds)
+        os.environ["CAIC_PAYMENTLIST_SHEETID"] = "1TkDu5TI5T7aPuhVVGAF4XhBtGEDEPVspmqkSJSv-bkI"
+        os.environ["CAIC_PAYMENTLIST_SHEETRANGE"] = "会費確認!A:C"
+
+        exp = ["会員種別", "氏名", "口座名義"]
+        ret = main.import_members(creds)
 
         self.assertEqual(exp, ret[0])
+
+    def testCIenv(self):
+        os.environ["CI"] = "true"
+
+        self.testImport_member()
