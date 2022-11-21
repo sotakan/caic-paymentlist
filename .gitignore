@@ -2,3 +2,5 @@ playground/
 .DS_Store
 *.pyc
 settings.json
+creds/
+.env
