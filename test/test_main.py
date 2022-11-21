@@ -40,7 +40,7 @@ class testMain(unittest.TestCase):
 
     def testImport_member(self):
 
-        if os.environ.get("CI"):
+        if os.environ.get("CI") == "true":
             creds = Credentials(token=os.environ.get("CI_TOKEN"), refresh_token=os.environ.get("CI_REFRESH_TOKEN"), token_uri=os.environ.get("CI_TOKEN_URI"), client_id=os.environ.get("CI_CLIENT_ID"), client_secret=os.environ.get("CI_CLIENT_SECRET"), scopes= [os.environ.get("CI_SCOPES")])
         else:
             os.environ["CAIC_PAYMENTLIST_CREDPATH"]="creds"
